@@ -9,7 +9,6 @@
     <li><a href="#setup">Установка</a></li>
     <li><a href="#testing">Тестирование</a></li>
     <li><a href="#reports">Отчеты</a></li>
-    <li><a href="#ci-cd">CI/CD</a></li>
 </ul>
 
 <h2>Описание проекта</h2>
@@ -176,25 +175,6 @@
     <li>Детализация по каждому тест-кейсу</li>
     <li>Временные метки выполнения</li>
     <li>Логи запросов и ответов</li>
-</ul>
-
-<br><h2>CI/CD</h2>
-
-<h3>Поддерживаемые системы</h3>
-<ul>
-    <li>✅ <code>GitHub Actions</code></li>
-    <li>✅ <code>GitLab CI</code></li>
-    <li>✅ <code>Jenkins</code></li>
-</ul>
-
-<h3>Что делает CI/CD:</h3>
-<ul>
-    <li>Автоматический запуск тестов при <code>push</code> и <code>PR</code></li>
-    <li>Установка <code>Java 17</code> в CI-окружении</li>
-    <li>Кэширование зависимостей <code>Maven</code></li>
-    <li>Генерация <code>Allure</code> отчетов</li>
-    <li>Сохранение артефактов тестов</li>
-    <li>Уведомления о результатах</li>
 </ul>
 
 <h3>Требования к API серверу</h3>
