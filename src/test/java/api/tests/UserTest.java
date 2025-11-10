@@ -3,6 +3,10 @@ package api.tests;
 import api.dto.Addition;
 import api.dto.Entity;
 import api.util.Specifications;
+import io.qameta.allure.Description;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.Story;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -42,6 +46,9 @@ public class UserTest {
     }
 
     @Test
+    @Story("Выводит список сущностей")
+    @Description("Вывод списка сущностей")
+    @Severity(SeverityLevel.CRITICAL)
     public void getAllEntities() {
         Specifications.installSpecification(
                 Specifications.requestSpec(URL),
@@ -58,6 +65,9 @@ public class UserTest {
     }
 
     @Test
+    @Story("Проверка на некорректность")
+    @Description("Проверяет на некорректный вывод сущностей")
+    @Severity(SeverityLevel.CRITICAL)
     public void getAllEntities_Code500() {
         Specifications.installSpecification(
                 Specifications.requestSpec(URL),
@@ -72,16 +82,9 @@ public class UserTest {
     }
 
     @Test
-    public void getEntityById() {
-        Specifications.installSpecification(
-                Specifications.requestSpec(URL),
-                Specifications.responseSpec_Code_200()
-        );
-
-        getById(random.nextInt(1, 5));
-    }
-
-    @Test
+    @Story("Создание сущности")
+    @Description("Проверяет корректное создание сущности и проверку на ее создание по ID")
+    @Severity(SeverityLevel.CRITICAL)
     public void createEntity() {
         Specifications.installSpecification(
                 Specifications.requestSpec(URL),
@@ -101,9 +104,18 @@ public class UserTest {
         Integer responseID = Integer.parseInt(responseText.trim());
         Assertions.assertNotNull(responseID);
         Assertions.assertTrue(responseText.equals(responseID.toString()));
+
+        given()
+                .when()
+                .get("get/" + responseText)
+                .then()
+                .log().all();
     }
 
     @Test
+    @Story("Создание сущности")
+    @Description("Проверяет корректное создание сущности и проверяет ее создание")
+    @Severity(SeverityLevel.CRITICAL)
     public void createEntityAndCheck() {
         Specifications.installSpecification(
                 Specifications.requestSpec(URL),
@@ -124,6 +136,9 @@ public class UserTest {
     }
 
     @Test
+    @Story("Обновление сущности")
+    @Description("Проверяет корректное обновление сущности и ее проверку по ID")
+    @Severity(SeverityLevel.CRITICAL)
     public void updateEntity() {
         Specifications.installSpecification(
                 Specifications.requestSpec(URL),
@@ -162,6 +177,9 @@ public class UserTest {
     }
 
     @Test
+    @Story("Удаление сущности")
+    @Description("Проверяет корректное удаление сущности и проверку на удаление по ID")
+    @Severity(SeverityLevel.CRITICAL)
     public void deleteEntity() {
         Specifications.installSpecification(
                 Specifications.requestSpec(URL),
