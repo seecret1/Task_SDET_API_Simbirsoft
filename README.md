@@ -54,11 +54,6 @@
     <p>Генерация отчетов</p>
 </div>
 <div class="tech-item">
-    <h4>Lombok</h4>
-    <p><code>1.18.26</code></p>
-    <p>Упрощение кода через аннотации</p>
-</div>
-<div class="tech-item">
     <h4>Owner</h4>
     <p><code>1.0.12</code></p>
     <p>Управление конфигурацией</p>
