@@ -64,7 +64,6 @@
 <h3>Шаг 1: Клонирование API приложения</h3>
 <div class="code-block">
     <code>git clone https://github.com/bondarenkokate73/simbirsoft_sdet_project.git</code><br>
-    <code>cd simbirsoft_sdet_project</code>
 </div>
 
 <h3>Шаг 2: Запуск API через Docker Compose</h3>
@@ -77,8 +76,7 @@
 <h3>Шаг 3: Клонирование тестового проекта</h3>
 <div class="code-block">
     <code>cd ..</code><br>
-    <code>git clone &lt;ваш-репозиторий-с-тестами&gt;</code><br>
-    <code>cd &lt;ваш-тестовый-проект&gt;</code>
+    <code>git clone https://github.com/seecret1/Task_SDET_API_Simbirsoft.git</code><br>
 </div>
 
 <h3>Шаг 4: Запуск тестов</h3>
@@ -114,127 +112,12 @@
     <code>docker-compose --version</code>
 </div>
 
-<br><h2>Запуск через Docker</h2>
-
-<h3>Docker Compose для полного запуска</h3>
-<p>Создайте <code>docker-compose.yml</code> в корне тестового проекта:</p>
-
-<div class="code-block">
-<code>version: '3.8'</code><br>
-<code>services:</code><br>
-<code>  api:</code><br>
-<code>    image: bondarenkokate73/simbirsoft-api:latest</code><br>
-<code>    ports:</code><br>
-<code>      - "8080:8080"</code><br>
-<code>    environment:</code><br>
-<code>      - SPRING_PROFILES_ACTIVE=docker</code><br>
-<code>  tests:</code><br>
-<code>    build: .</code><br>
-<code>    depends_on:</code><br>
-<code>      - api</code><br>
-<code>    environment:</code><br>
-<code>      - BASE_URL=http://api:8080</code>
-</div>
-
-<h3>Команды Docker</h3>
-<div class="command"><code># Запуск всей системы</code></div>
-<div class="command"><code>docker-compose up --build</code></div>
-
-<div class="command"><code># Только API</code></div>
-<div class="command"><code>docker-compose up api -d</code></div>
-
-<div class="command"><code># Только тесты</code></div>
-<div class="command"><code>docker-compose run tests</code></div>
-
 <br><h2>CI/CD Интеграция</h2>
-
-<h3>GitHub Actions</h3>
-<p>Создайте файл <code>.github/workflows/ci.yml</code>:</p>
-
-<div class="code-block">
-<code>name: Java CI</code><br>
-<code>on: [push, pull_request]</code><br>
-<code>jobs:</code><br>
-<code>  test:</code><br>
-<code>    runs-on: ubuntu-latest</code><br>
-<code>    services:</code><br>
-<code>      api:</code><br>
-<code>        image: bondarenkokate73/simbirsoft-api:latest</code><br>
-<code>        ports:</code><br>
-<code>          - 8080:8080</code><br>
-<code>    steps:</code><br>
-<code>    - uses: actions/checkout@v4</code><br>
-<code>    - name: Set up JDK 17</code><br>
-<code>      uses: actions/setup-java@v4</code><br>
-<code>      with:</code><br>
-<code>        java-version: '17'</code><br>
-<code>        distribution: 'temurin'</code><br>
-<code>        cache: maven</code><br>
-<code>    - name: Wait for API</code><br>
-<code>      run: sleep 30</code><br>
-<code>    - name: Run tests</code><br>
-<code>      run: mvn test</code><br>
-<code>    - name: Generate Allure report</code><br>
-<code>      run: mvn allure:report</code>
-</div>
-
-<h3>GitLab CI</h3>
-<p>Создайте файл <code>.gitlab-ci.yml</code>:</p>
-
-<div class="code-block">
-<code>stages:</code><br>
-<code>  - test</code><br>
-<code>api-test:</code><br>
-<code>  stage: test</code><br>
-<code>  image: maven:3.8.6-openjdk-17</code><br>
-<code>  services:</code><br>
-<code>    - name: bondarenkokate73/simbirsoft-api:latest</code><br>
-<code>      alias: api</code><br>
-<code>  variables:</code><br>
-<code>    BASE_URL: http://api:8080</code><br>
-<code>  script:</code><br>
-<code>    - apt-get update && apt-get install -y curl</code><br>
-<code>    - echo "Waiting for API..."</code><br>
-<code>    - sleep 30</code><br>
-<code>    - mvn test</code><br>
-<code>  artifacts:</code><br>
-<code>    when: always</code><br>
-<code>    paths:</code><br>
-<code>      - target/surefire-reports/</code><br>
-<code>    reports:</code><br>
-<code>      junit: target/surefire-reports/*.xml</code>
-</div>
-
-<h3>Jenkins</h3>
-<p>Создайте <code>Jenkinsfile</code> в корне проекта:</p>
-
-<div class="code-block">
-<code>pipeline {</code><br>
-<code>    agent any</code><br>
-<code>    tools {</code><br>
-<code>        maven 'Maven-3.8.6'</code><br>
-<code>        jdk 'OpenJDK-17'</code><br>
-<code>    }</code><br>
-<code>    stages {</code><br>
-<code>        stage('Start API') {</code><br>
-<code>            steps {</code><br>
-<code>                sh 'docker run -d -p 8080:8080 bondarenkokate73/simbirsoft-api:latest'</code><br>
-<code>                sh 'sleep 30'</code><br>
-<code>            }</code><br>
-<code>        }</code><br>
-<code>        stage('Run Tests') {</code><br>
-<code>            steps {</code><br>
-<code>                sh 'mvn clean test'</code><br>
-<code>            }</code><br>
-<code>            post {</code><br>
-<code>                always {</code><br>
-<code>                    junit 'target/surefire-reports/*.xml'</code><br>
-<code>                }</code><br>
-<code>            }</code><br>
-<code>        }</code><br>
-<code>    }</code><br>
-<code>}</code>
-</div>
+<ul>
+    <li>GitHub Actions, путь: <code>.github/workflows/ci.yml</code></li>
+    <li>GitLab CI <code>.gitlab-ci.yml</code> в корне проекта</li>
+    <li>Jenkins <code>Jenkinsfile</code> в корне проекта</li>
+</ul>
 
 <br><h2>Запуск тестов</h2>
 
