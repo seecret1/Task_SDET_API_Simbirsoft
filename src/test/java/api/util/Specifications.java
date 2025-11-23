@@ -1,7 +1,7 @@
+// Specifications.java
 package api.util;
 
 import io.qameta.allure.restassured.AllureRestAssured;
-import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.builder.ResponseSpecBuilder;
 import io.restassured.http.ContentType;
@@ -16,7 +16,7 @@ public class Specifications {
 
     static Configuration conf = ConfigFactory.create(Configuration.class);
 
-    public static RequestSpecification requestSpec(String url) {
+    public static RequestSpecification requestSpec() {
         return new RequestSpecBuilder()
                 .setBaseUri(conf.getUrl())
                 .setBasePath(conf.getPath())
@@ -47,13 +47,5 @@ public class Specifications {
         return new ResponseSpecBuilder()
                 .expectStatusCode(500)
                 .build();
-    }
-
-    public static void installSpecification(
-            RequestSpecification request,
-            ResponseSpecification response
-    ) {
-        RestAssured.requestSpecification = request;
-        RestAssured.responseSpecification = response;
     }
 }
